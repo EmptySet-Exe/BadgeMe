@@ -1,0 +1,43 @@
+{
+    "issuer": "0xISSUER_ADDR_TBD",
+    "personas": [
+      {
+        "label": "adult_valid_CA",
+        "holder": "0xHOLDER1",
+        "claims": {"over18": true, "over21": true, "region": "CA", "aml_ok": true},
+        "claimsHash": "0xTBD32",
+        "expiry": 1767225600,
+        "flags": 3,
+        "region_bytes2": "0x4341",
+        "nonce": "0xNONCE1...32B",
+        "digest": "0xTBD32",
+        "sig": {"v":0,"r":"0x","s":"0x"}
+      },
+      {
+        "label": "underage_US",
+        "holder": "0xHOLDER2",
+        "claims": {"over18": false, "over21": false, "region": "US", "aml_ok": true},
+        "claimsHash": "0xTBD32",
+        "expiry": 1767225600,
+        "flags": 4,
+        "region_bytes2": "0x5553",
+        "nonce": "0xNONCE2...32B",
+        "digest": "0xTBD32",
+        "sig": {"v":0,"r":"0x","s":"0x"}
+      },
+      {
+        "label": "revoked_adult_GB",
+        "holder": "0xHOLDER3",
+        "claims": {"over18": true, "over21": true, "region": "GB", "aml_ok": true},
+        "claimsHash": "0xTBD32",
+        "expiry": 1767225600,
+        "flags": 3,
+        "region_bytes2": "0x4742",
+        "nonce": "0xNONCE3...32B",
+        "digest": "0xTBD32",
+        "sig": {"v":0,"r":"0x","s":"0x"},
+        "revoke_after_issue": true
+      }
+    ]
+  }
+  

@@ -1,0 +1,54 @@
+{
+    "project": "zk-kyc-badge",
+    "version": 1,
+    "lastUpdated": "2025-09-26T00:00:00Z",
+    "contracts": {
+      "KycBadge": {
+        "abi": "artifacts/KycBadge.abi.json",
+        "deployments": {
+          "anvil": {
+            "network": "anvil",
+            "chainId": 31337,
+            "address": "0x0000000000000000000000000000000000000000",
+            "deployer": "0x0000000000000000000000000000000000000000",
+            "issuer": "0x0000000000000000000000000000000000000000",
+            "txHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "blockNumber": 0,
+            "createdAt": "2025-09-26T00:00:00Z",
+            "verification": {
+              "bytecodeHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "sourceCommit": "REPLACE_ME_GIT_SHA"
+            }
+          },
+          "sepolia": {
+            "network": "sepolia",
+            "chainId": 11155111,
+            "address": "0xREPLACE_ME_CONTRACT_ADDRESS",
+            "deployer": "0xREPLACE_ME_DEPLOYER",
+            "issuer": "0xREPLACE_ME_ISSUER", 
+            "txHash": "0xREPLACE_ME_TX_HASH",
+            "blockNumber": 0,
+            "createdAt": "2025-09-26T00:00:00Z",
+            "explorer": "https://sepolia.etherscan.io/address/0xREPLACE_ME_CONTRACT_ADDRESS",
+            "verification": {
+              "bytecodeHash": "0xREPLACE_ME_BYTECODE_HASH",
+              "verifiedOnExplorer": false,
+              "sourceCommit": "REPLACE_ME_GIT_SHA"
+            }
+          },
+          "midnight_testnet": {
+            "network": "midnight_testnet",
+            "chainId": 0,
+            "address": "0xREPLACE_IF_PORTED",
+            "deployer": "0xREPLACE_IF_PORTED",
+            "issuer": "0xREPLACE_IF_PORTED",
+            "txHash": "0xREPLACE_IF_PORTED",
+            "blockNumber": 0,
+            "createdAt": "2025-09-26T00:00:00Z",
+            "notes": "Populate if/when you port the same ABI to Midnight/Compact."
+          }
+        }
+      }
+    }
+  }
+  

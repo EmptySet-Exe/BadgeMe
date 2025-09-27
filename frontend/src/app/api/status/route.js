@@ -1,8 +1,21 @@
+import { parseAddress, validateAddress } from '@midnight-ntwrk/wallet-sdk-address-format';
+
 export async function GET(request) {
   const url = new URL(request.url);
   const wallet = url.searchParams.get('wallet') || 'default';
 
-  const verified = wallet.startsWith('0x');
+  let verified = false;
+  let validationError = null;
+
+  try {
+    // Use Midnight wallet SDK for proper address validation
+    const parsedAddress = parseAddress(wallet);
+    verified = validateAddress(parsedAddress);
+  } catch (error) {
+    // If parsing/validation fails, address is invalid
+    verified = false;
+    validationError = error.message;
+  }
   
   if (verified) {
     // Return actual KYC badge properties from smart contract
@@ -17,7 +30,12 @@ export async function GET(request) {
       },
       flags: ['OVER18', 'AML_OK'],
       region: 'US',
-      expiryDate: '2026-01-01T00:00:00Z'
+      expiryDate: '2026-01-01T00:00:00Z',
+      addressInfo: {
+        isValid: true,
+        format: 'midnight',
+        validationMethod: 'midnight-sdk'
+      }
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -28,7 +46,12 @@ export async function GET(request) {
       badge: null,
       flags: [],
       region: null,
-      expiryDate: null
+      expiryDate: null,
+      addressInfo: {
+        isValid: false,
+        error: validationError || 'Invalid wallet address format',
+        validationMethod: 'midnight-sdk'
+      }
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

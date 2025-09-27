@@ -1,4 +1,4 @@
-export default function Badge({verified = true, flags = ['OVER18'], badge = null, region = null, expiryDate = null}){
+export default function Badge({verified = true, flags = ['OVER18'], badge = null, region = null, expiryDate = null, addressInfo = null}){
     const formatExpiryDate = (timestamp) => {
         if (!timestamp) return 'N/A';
         const date = new Date(timestamp * 1000);
@@ -38,6 +38,30 @@ export default function Badge({verified = true, flags = ['OVER18'], badge = null
                 </h2>
             </div>
             
+            {/* Address Validation Info */}
+            {addressInfo && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                            <span className="text-blue-600">🔍</span>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm font-medium text-blue-800">
+                                Address Validation: {addressInfo.isValid ? 'Valid' : 'Invalid'}
+                            </p>
+                            <p className="text-xs text-blue-600">
+                                Method: {addressInfo.validationMethod} | Format: {addressInfo.format || 'Unknown'}
+                            </p>
+                            {addressInfo.error && (
+                                <p className="text-xs text-red-600 mt-1">
+                                    Error: {addressInfo.error}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+            
             {verified && badge && (
                 <div className="space-y-3 text-sm">
                     <div className="grid grid-cols-2 gap-2">
@@ -76,6 +100,11 @@ export default function Badge({verified = true, flags = ['OVER18'], badge = null
             {!verified && (
                 <div className="text-center text-gray-500">
                     <p>No KYC badge found for this wallet address.</p>
+                    {addressInfo && !addressInfo.isValid && (
+                        <p className="text-sm mt-2 text-red-500">
+                            Please enter a valid Midnight wallet address.
+                        </p>
+                    )}
                 </div>
             )}
         </div>

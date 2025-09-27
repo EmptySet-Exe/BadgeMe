@@ -50,6 +50,7 @@ export default function Home() {
           badge={status.badge}
           region={status.region}
           expiryDate={status.expiryDate}
+          addressInfo={status.addressInfo}
         />}
       </div>
     </main>

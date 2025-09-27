@@ -1,56 +1,56 @@
-// KYC Frontend Testing Script
+// KYC Frontend Testing Script with Midnight Wallet SDK
 // Run this in your browser's developer console at http://localhost:3000
 
-console.log("🧪 Starting KYC Verification Tests...\n");
+console.log("🧪 Starting KYC Verification Tests with Midnight Wallet SDK...\n");
 
 const testCases = [
-    // Valid cases (should return verified: true)
+    // Valid Midnight wallet addresses (should return verified: true)
     {
-        name: "Standard Ethereum Address",
-        wallet: "0x1234567890abcdef1234567890abcdef12345678",
-        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "IN" }
+        name: "Valid Midnight Address Format 1",
+        wallet: "midnight1abc123def456ghi789jkl012mno345pqr678stu901vwx234yz",
+        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "US", validationMethod: "midnight-sdk" }
     },
     {
-        name: "Short Valid Address",
-        wallet: "0x123",
-        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "IN" }
-    },
-    {
-        name: "Mixed Case Address",
-        wallet: "0xAbCdEf1234567890",
-        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "IN" }
-    },
-    {
-        name: "Address with Special Characters",
-        wallet: "0x!@#$%^&*()",
-        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "IN" }
+        name: "Valid Midnight Address Format 2", 
+        wallet: "midnight1qwertyuiopasdfghjklzxcvbnm1234567890",
+        expected: { verified: true, flags: ["OVER18", "AML_OK"], region: "US", validationMethod: "midnight-sdk" }
     },
     
     // Invalid cases (should return verified: false)
     {
-        name: "Address without 0x prefix",
+        name: "Ethereum-style address (0x prefix)",
+        wallet: "0x1234567890abcdef1234567890abcdef12345678",
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
+    },
+    {
+        name: "Address without midnight prefix",
         wallet: "1234567890abcdef1234567890abcdef12345678",
-        expected: { verified: false, flags: [], region: "IN" }
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
     },
     {
         name: "Empty string",
         wallet: "",
-        expected: { verified: false, flags: [], region: "IN" }
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
     },
     {
         name: "Random text",
         wallet: "hello world",
-        expected: { verified: false, flags: [], region: "IN" }
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
     },
     {
         name: "Numbers only",
         wallet: "123456789",
-        expected: { verified: false, flags: [], region: "IN" }
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
+    },
+    {
+        name: "Invalid midnight format",
+        wallet: "midnight123",
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
     },
     {
         name: "Null input",
         wallet: null,
-        expected: { verified: false, flags: [], region: "IN" }
+        expected: { verified: false, flags: [], region: null, validationMethod: "midnight-sdk" }
     }
 ];
 
@@ -97,3 +97,4 @@ async function runTests() {
 
 // Run the tests
 runTests();
+

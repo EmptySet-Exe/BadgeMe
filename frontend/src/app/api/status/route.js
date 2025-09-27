@@ -1,4 +1,4 @@
-import { parseAddress, validateAddress } from '@midnight-ntwrk/wallet-sdk-address-format';
+import { MidnightBech32m } from '@midnight-ntwrk/wallet-sdk-address-format';
 
 export async function GET(request) {
   const url = new URL(request.url);
@@ -9,10 +9,11 @@ export async function GET(request) {
 
   try {
     // Use Midnight wallet SDK for proper address validation
-    const parsedAddress = parseAddress(wallet);
-    verified = validateAddress(parsedAddress);
+    const parsedAddress = MidnightBech32m.parse(wallet);
+    // Additional validation - check if it's a valid Midnight address format
+    verified = parsedAddress && parsedAddress.type && parsedAddress.data;
   } catch (error) {
-    // If parsing/validation fails, address is invalid
+    // If parsing fails, address is invalid
     verified = false;
     validationError = error.message;
   }
@@ -33,8 +34,9 @@ export async function GET(request) {
       expiryDate: '2026-01-01T00:00:00Z',
       addressInfo: {
         isValid: true,
-        format: 'midnight',
-        validationMethod: 'midnight-sdk'
+        format: 'midnight-bech32m',
+        validationMethod: 'midnight-sdk',
+        addressType: 'MidnightBech32m'
       }
     }), {
       status: 200,
@@ -49,8 +51,9 @@ export async function GET(request) {
       expiryDate: null,
       addressInfo: {
         isValid: false,
-        error: validationError || 'Invalid wallet address format',
-        validationMethod: 'midnight-sdk'
+        error: validationError || 'Invalid Midnight wallet address format',
+        validationMethod: 'midnight-sdk',
+        format: 'unknown'
       }
     }), {
       status: 200,

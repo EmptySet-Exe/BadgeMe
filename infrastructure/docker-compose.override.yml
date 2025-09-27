@@ -1,0 +1,9 @@
+services:
+  web:
+    volumes:
+      - ../web:/app
+    command: ["pnpm", "dev"]
+  issuer:
+    volumes:
+      - ../issuer:/app
+    command: ["pnpm", "dev"]

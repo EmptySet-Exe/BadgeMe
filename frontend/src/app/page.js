@@ -44,7 +44,13 @@ export default function Home() {
             {loading ? 'Verifying...' : 'Verify KYC'}
           </button>
         </form>
-        {status && <Badge verified={status.verified} flags={status.flags} />}
+        {status && <Badge 
+          verified={status.verified} 
+          flags={status.flags} 
+          badge={status.badge}
+          region={status.region}
+          expiryDate={status.expiryDate}
+        />}
       </div>
     </main>
   );

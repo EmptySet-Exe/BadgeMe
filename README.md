@@ -12,8 +12,9 @@ This branch contains the frontend UI for BadgeMe, a zk-KYC verification demo bui
 ## Functionality Demo
 <img width="1366" height="608" alt="image" src="https://github.com/user-attachments/assets/971ebc45-c871-44e1-983f-476ca07bc4e5" />
 
-- Enter "0x123" in the wallet field and submit to see a verified badge with flags (OVER18, AML_OK).
+- Enter "0x123" or "0xABCDEF456" in the wallet field and submit to see a verified badge with flags (OVER18, AML_OK).
 - Enter "abc" to see not verified (no flags).
+- Spaces and special chars are not allowed.
 - The mock API simulates zk-proof responses—replace with real backend for production.
 
 ## How to Run and Test

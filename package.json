@@ -1,0 +1,24 @@
+{
+  "name": "badgeme",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/EmptySet-Exe/BadgeMe#readme",
+  "bugs": {
+    "url": "https://github.com/EmptySet-Exe/BadgeMe/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmptySet-Exe/BadgeMe.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "backend/index.js",
+  "scripts": {
+    "dev": "node backend/index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "node": "^24.9.0"
+  }
+}

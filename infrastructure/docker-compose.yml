@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: ../frontend          # Path to frontend directory
+      dockerfile: Dockerfile        # Dockerfile is relative to context
+    image: badgeme/frontend:local
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development       # Changed to development for local setup

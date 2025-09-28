@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BadgeMe - KYC Verification Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fef3e2, #e0f2fe);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover:not(:disabled) {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .verified {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+        .not-verified {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        .status-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .status-text {
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .verified .status-text {
+            color: #166534;
+        }
+        .not-verified .status-text {
+            color: #dc2626;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .info-item {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+        .info-value {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .address-info {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-bottom: 16px;
+            border-radius: 0 6px 6px 0;
+        }
+        .address-info .label {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 14px;
+        }
+        .address-info .value {
+            color: #1e40af;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .error {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        .loading {
+            color: #6b7280;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to BadgeMe</h1>
+        <p class="subtitle">zk-KYC Verification Demo</p>
+        
+        <form id="verifyForm">
+            <input 
+                type="text" 
+                id="walletInput" 
+                placeholder="Enter wallet address (e.g., 0x123...)" 
+                required
+            >
+            <button type="submit" id="verifyBtn">Verify KYC</button>
+        </form>
+        
+        <div id="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('verifyForm');
+        const walletInput = document.getElementById('walletInput');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const result = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const wallet = walletInput.value.trim();
+            if (!wallet) return;
+
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch(`http://localhost:4000/api/status?wallet=${encodeURIComponent(wallet)}`);
+                const data = await response.json();
+                
+                displayResult(data);
+            } catch (error) {
+                displayResult({ verified: false, error: 'Failed to connect to server' });
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Verify KYC';
+            }
+        });
+
+        function displayResult(data) {
+            result.style.display = 'block';
+            
+            if (data.verified) {
+                result.className = 'result verified';
+                result.innerHTML = `
+                    <div class="status-icon">✅</div>
+                    <div class="status-text">KYC Verified</div>
+                    
+                    ${data.addressInfo ? `
+                        <div class="address-info">
+                            <div class="label">Address Validation: ${data.addressInfo.isValid ? 'Valid' : 'Invalid'}</div>
+                            <div class="value">Method: ${data.addressInfo.validationMethod} | Format: ${data.addressInfo.format || 'Unknown'}</div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Flags:</div>
+                            <div class="info-value">${data.flags ? data.flags.join(', ') : 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Region:</div>
+                            <div class="info-value">${data.region || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Expiry:</div>
+                            <div class="info-value">${data.expiryDate || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Status:</div>
+                            <div class="info-value">${data.badge && data.badge.revoked ? 'Revoked' : 'Active'}</div>
+                        </div>
+                    </div>
+                    
+                    ${data.badge && data.badge.claimsHash ? `
+                        <div class="info-item">
+                            <div class="info-label">Claims Hash:</div>
+                            <div class="info-value" style="font-family: monospace; font-size: 12px; word-break: break-all;">${data.badge.claimsHash}</div>
+                        </div>
+                    ` : ''}
+                `;
+            } else {
+                result.className = 'result not-verified';
+                result.innerHTML = `
+                    <div class="status-icon">❌</div>
+                    <div class="status-text">Not Verified</div>
+                    <div class="info-value">No KYC badge found for this wallet address.</div>
+                    ${data.addressInfo && !data.addressInfo.isValid ? `
+                        <div class="error">Please enter a valid Midnight wallet address.</div>
+                    ` : ''}
+                    ${data.error ? `
+                        <div class="error">Error: ${data.error}</div>
+                    ` : ''}
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

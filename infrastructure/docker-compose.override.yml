@@ -1,9 +1,5 @@
 services:
-  web:
+  frontend:
     volumes:
-      - ../web:/app
-    command: ["pnpm", "dev"]
-  issuer:
-    volumes:
-      - ../issuer:/app
-    command: ["pnpm", "dev"]
+      - ../frontend:/app   # 👈 mount local frontend code
+    command: ["pnpm", "dev"] # run Next.js in dev mode with hot reload

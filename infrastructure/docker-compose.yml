@@ -1,24 +1,10 @@
-version: "3.9"
 services:
-  issuer:
-    build: ../issuer
-    image: badgeme/issuer:local
-    ports:
-      - "4000:4000"
-    environment:
-      - NODE_ENV=development
-    depends_on: []
-
-  web:
-    build: ../web
-    image: badgeme/web:local
+  frontend:
+    build:
+      context: ../frontend          # Path to frontend directory
+      dockerfile: Dockerfile        # Dockerfile is relative to context
+    image: badgeme/frontend:local
     ports:
       - "3000:3000"
-    depends_on:
-      - issuer
-
-  zk-stub:
-    build: ../zk-stub
-    image: badgeme/zk-stub:local
-    ports:
-      - "5000:5000"
+    environment:
+      - NODE_ENV=development       # Changed to development for local setup
